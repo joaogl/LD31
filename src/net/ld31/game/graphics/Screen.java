@@ -4,11 +4,13 @@ import java.util.Random;
 
 public class Screen {
 
-	private int width, height;
+	public int width, height;
 	public int[] pixels;
 
 	public final int MAP_SIZE = 64;
 	public final int MAP_SIZE_MASK = MAP_SIZE - 1;
+
+	public int xOffset, yOffset;
 
 	public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
 
@@ -30,18 +32,22 @@ public class Screen {
 		}
 	}
 
-	public void render(int xOffset, int yOffset) {
-		for (int y = 0; y < height; y++) {
-			int yp = y + yOffset;
-			if (yp < 0 || yp >= height) continue;
-			for (int x = 0; x < width; x++) {
-				int xp = x + xOffset;
-				if (xp < 0 || xp >= width) continue;
-
-				// int tileIndex = ((xx >> 4) & MAP_SIZE_MASK) + ((yy >> 4) & MAP_SIZE_MASK) * MAP_SIZE;
-				// pixels[x + y * width] = tiles[tileIndex];
-				pixels[xp + yp * width] = Sprite.green.pixels[(x & 15) + (y & 15) * Sprite.green.SIZE];
+	public void renderTile(int xp, int yp, Sprite sprite) {
+		xp -= xOffset;
+		yp -= yOffset;
+		for (int y = 0; y < sprite.SIZE; y++) {
+			int ya = y + yp;
+			for (int x = 0; x < sprite.SIZE; x++) {
+				int xa = x + xp;
+				if (xa < 0 || xa >= width || ya < 0 || ya >= width) break;
+				pixels[xa + ya * width] = sprite.pixels[x + y * sprite.SIZE];
 			}
 		}
 	}
+
+	public void setOffset(int xOffset, int yOffset) {
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+	}
+
 }
