@@ -39,8 +39,9 @@ public class Screen {
 			int ya = y + yp;
 			for (int x = 0; x < sprite.SIZE; x++) {
 				int xa = x + xp;
-				if (xa < 0 || xa >= width || ya < 0 || ya >= width) break;
-				pixels[xa + ya * width] = sprite.pixels[x + y * sprite.SIZE];
+				if (xa < -sprite.SIZE || xa >= width || ya < 0 || ya >= height) break;
+				if (xa < 0) xa = 0;
+				pixels[xa + ya * width] = sprite.pixels[x + y * sprite.SIZE];				
 			}
 		}
 	}
