@@ -1,7 +1,10 @@
 package net.ld31.game;
 
 import java.awt.Canvas;
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
 import javax.swing.JFrame;
 
@@ -38,9 +41,30 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
+	public void update() {
+
+	}
+
+	public void render() {
+		BufferStrategy bs = getBufferStrategy();
+		if (bs == null) {
+			createBufferStrategy(3);
+			return;
+		}
+
+		Graphics g = bs.getDrawGraphics();
+
+		g.setColor(Color.PINK);
+		g.fillRect(10, 10, 20, 20);
+
+		g.dispose();
+		bs.show();
+	}
+
 	public void run() {
 		while (running) {
-
+			update();
+			render();
 		}
 	}
 
